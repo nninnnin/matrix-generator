@@ -2,10 +2,14 @@ class Matrix {
   rows: number = 0;
   cols: number = 0;
   matrix: Array<Array<string>> = [];
-  divider: Record<string, Array<number>> = {
-    x_axis: [],
-    y_axis: [],
+  divider: Divider = {
+    x_axis: new Set([1, 2]),
+    y_axis: new Set([1, 2]),
   };
+
+  constructor(rows: number, cols: number) {
+    this.updateMatrix(rows, cols);
+  }
 
   updateMatrix(rows: number, cols: number) {
     this.rows = rows;
@@ -39,9 +43,34 @@ class Matrix {
     };
   }
 
-  constructor(rows: number, cols: number) {
-    this.updateMatrix(rows, cols);
+  setDivider(axis: "row" | "col", dividerIndex: number) {
+    if (axis === "row") {
+      this.toggleDividierIndex(this.divider.y_axis, dividerIndex);
+
+      return;
+    }
+
+    this.toggleDividierIndex(this.divider.x_axis, dividerIndex);
+  }
+
+  private toggleDividierIndex(set: Set<number>, value: number) {
+    if (set.has(value)) {
+      set.delete(value);
+
+      return;
+    }
+
+    set.add(value);
+  }
+
+  getDivider() {
+    return this.divider;
   }
 }
 
 export default Matrix;
+
+export interface Divider {
+  x_axis: Set<number>;
+  y_axis: Set<number>;
+}
