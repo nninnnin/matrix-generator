@@ -1,19 +1,23 @@
 class Matrix {
-  rows: number = 0;
-  cols: number = 0;
+  size: Size = {
+    rows: 0,
+    cols: 0,
+  };
   matrix: Array<Array<string>> = [];
   divider: Divider = {
-    x_axis: new Set([1, 2]),
-    y_axis: new Set([1, 2]),
+    x_axis: new Set([]),
+    y_axis: new Set([]),
   };
 
   constructor(rows: number, cols: number) {
-    this.updateMatrix(rows, cols);
+    this.setMatrix(rows, cols);
   }
 
-  updateMatrix(rows: number, cols: number) {
-    this.rows = rows;
-    this.cols = cols;
+  setMatrix(rows: number, cols: number) {
+    this.size = {
+      rows,
+      cols,
+    };
 
     for (let i = 0; i < rows; i++) {
       const row: Array<string> = new Array(cols).fill(null).map((el) => "");
@@ -36,11 +40,8 @@ class Matrix {
     console.log("-----");
   }
 
-  getSize() {
-    return {
-      rows: this.rows,
-      cols: this.cols,
-    };
+  getSize(): Size {
+    return this.size;
   }
 
   setDivider(axis: "row" | "col", dividerIndex: number) {
@@ -68,9 +69,14 @@ class Matrix {
   }
 }
 
-export default Matrix;
-
 export interface Divider {
   x_axis: Set<number>;
   y_axis: Set<number>;
 }
+
+export interface Size {
+  rows: number;
+  cols: number;
+}
+
+export default Matrix;
